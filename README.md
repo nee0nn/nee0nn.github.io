@@ -1,4 +1,4 @@
-John Russell's — Personal Portfolio
+## John Russell's — Personal Portfolio
 
 A personal portfolio website showcasing my projects, skills, and background. Currently built with clean HTML and CSS, with Vue.js planned for dynamic interactivity.
 
@@ -15,11 +15,12 @@ A personal portfolio website showcasing my projects, skills, and background. Cur
 
 ## Project Structure
 text
-├── index.html
-├── style.css
-└── README.md
+index.html
+style.css
+README.md
 
 Roadmap
+
 [x] Build core HTML structure and sections
 
 [x] Style layout, colors, and typography with CSS
