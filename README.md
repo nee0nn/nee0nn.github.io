@@ -1,4 +1,4 @@
-# [Your Name] — Personal Portfolio
+John Russell's — Personal Portfolio
 
 A personal portfolio website showcasing my projects, skills, and background. Currently built with clean HTML and CSS, with Vue.js planned for dynamic interactivity.
 
