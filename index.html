@@ -3,153 +3,136 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Your Name — Portfolio</title>
-  <meta name="description" content="Portfolio of Your Name — developer, designer, etc." />
+  <title>John Russell — Portfolio</title>
+  <meta name="description" content="Portfolio of John Russell — tech enthusiast, etc." />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <div id="app">
 
-  <!-- navbar -->
-  <header class="site-header">
-    <nav class="nav" aria-label="Main navigation">
-      <a href="#home" class="nav__logo">Your Name</a>
+    <!-- layered progressive blur (iOS-style) -->
+    <div class="progressive-blur" aria-hidden="true">
+      <div class="progressive-blur__layer"></div>
+      <div class="progressive-blur__layer"></div>
+      <div class="progressive-blur__layer"></div>
+      <div class="progressive-blur__layer"></div>
+      <div class="progressive-blur__layer"></div>
+      <div class="progressive-blur__layer"></div>
+    </div>
 
-      <!-- nav links -->
-      <ul class="nav__links" id="nav-menu">
-        <li><a href="#home">Home</a></li>
-        <li><a href="#about">About</a></li>
-        <li><a href="#projects">Projects</a></li>
-        <li><a href="#skills">Skills</a></li>
-        <li><a href="#contact">Contact</a></li>
-      </ul>
-    </nav>
-  </header>
+    <header class="site-header">
+      <nav class="nav" aria-label="Main navigation">
+        <a href="#home" class="nav__logo">{{ profile.name }}</a>
 
-  <main>
-
-    <!-- home / hero section -->
-    <section id="home" class="hero">
-      <h1 class="hero__title">Hi, I'm Your Name</h1>
-      <p class="hero__subtitle">Developer · Designer · Problem Solver</p>
-      <p class="hero__text">
-        A short one- or two-sentence pitch about who you are and what you build.
-      </p>
-      <div class="hero__actions">
-        <a href="#projects" class="btn btn--primary">View Projects</a>
-        <a href="resume.pdf" class="btn btn--secondary" target="_blank" rel="noopener">Download Résumé</a>
-      </div>
-    </section>
-
-    <!-- about section -->
-    <section id="about" class="section about">
-      <h2 class="section__title">About Me</h2>
-      <p>
-        A paragraph about your background, what you're studying or working on,
-        and what kind of work you're looking for.
-      </p>
-      <p>
-        Another short paragraph — interests, values, or what drives you.
-      </p>
-    </section>
-
-    <!-- projects section -->
-    <section id="projects" class="section projects">
-      <h2 class="section__title">Projects</h2>
-
-      <div class="projects__grid">
-
-        <!-- project 1 -->
-        <article class="project-card">
-          <h3 class="project-card__title">Project One</h3>
-          <p class="project-card__desc">
-            One or two sentences on what the project does and what you learned.
-          </p>
-          <ul class="project-card__tags">
-            <li>React</li>
-            <li>Node.js</li>
-            <li>PostgreSQL</li>
+        <div class="nav__right">
+          <ul class="nav__links" :class="{ 'is-open': menuOpen }" id="nav-menu">
+            <li v-for="link in navLinks" :key="link.href">
+              <a :href="link.href" @click="menuOpen = false">{{ link.label }}</a>
+            </li>
           </ul>
-          <div class="project-card__links">
-            <a href="https://github.com/yourusername/project-one" target="_blank" rel="noopener">Code</a>
-            <a href="https://project-one-demo.com" target="_blank" rel="noopener">Live Demo</a>
-          </div>
-        </article>
 
-        <!-- project 2 -->
-        <article class="project-card">
-          <h3 class="project-card__title">Project Two</h3>
-          <p class="project-card__desc">
-            Short description of the project and your role.
-          </p>
-          <ul class="project-card__tags">
-            <li>Python</li>
-            <li>Flask</li>
+          <div class="nav__actions">
+            <button
+              class="theme-toggle"
+              @click="toggleTheme"
+              :aria-label="isDark ? 'Switch to light mode' : 'Switch to dark mode'"
+            >
+              {{ isDark ? '☀️' : '🌙' }}
+            </button>
+
+            <button
+              class="nav__toggle"
+              @click="menuOpen = !menuOpen"
+              :aria-expanded="menuOpen"
+              aria-controls="nav-menu"
+              aria-label="Toggle navigation menu"
+            >
+              <span class="nav__toggle-bar"></span>
+              <span class="nav__toggle-bar"></span>
+              <span class="nav__toggle-bar"></span>
+            </button>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main>
+      <section id="home" class="hero">
+        <h1 class="hero__title">Hi, I'm {{ profile.name }}</h1>
+        <p class="hero__subtitle">{{ profile.role }}</p>
+        <p class="hero__text">{{ profile.pitch }}</p>
+        <div class="hero__actions">
+          <a href="#projects" class="btn btn--primary">View Projects</a>
+          <a :href="profile.resumeUrl" class="btn btn--secondary" target="_blank" rel="noopener">
+            Download Résumé
+          </a>
+        </div>
+      </section>
+
+      <section id="about" class="section about">
+        <h2 class="section__title">About Me</h2>
+        <p v-for="(paragraph, index) in aboutParagraphs" :key="index">
+          {{ paragraph }}
+        </p>
+      </section>
+
+      <section id="projects" class="section projects">
+        <h2 class="section__title">Projects</h2>
+
+        <div class="projects__grid">
+          <article class="project-card" v-for="project in projects" :key="project.id">
+            <h3 class="project-card__title">{{ project.title }}</h3>
+            <p class="project-card__desc">{{ project.description }}</p>
+            <ul class="project-card__tags">
+              <li v-for="tag in project.tags" :key="tag">{{ tag }}</li>
+            </ul>
+            <div class="project-card__links">
+              <a v-if="project.codeUrl" :href="project.codeUrl" target="_blank" rel="noopener">
+                Code
+              </a>
+              <a v-if="project.demoUrl" :href="project.demoUrl" target="_blank" rel="noopener">
+                Live Demo
+              </a>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section id="skills" class="section skills">
+        <h2 class="section__title">Skills</h2>
+
+        <div class="skills__group" v-for="group in skillGroups" :key="group.category">
+          <h3>{{ group.category }}</h3>
+          <ul class="skills__list">
+            <li v-for="skill in group.items" :key="skill">{{ skill }}</li>
           </ul>
-          <div class="project-card__links">
-            <a href="https://github.com/yourusername/project-two" target="_blank" rel="noopener">Code</a>
-          </div>
-        </article>
+        </div>
+      </section>
 
-        <!-- project 3 -->
-        <article class="project-card">
-          <h3 class="project-card__title">Project Three</h3>
-          <p class="project-card__desc">
-            Short description of the project and your role.
-          </p>
-          <ul class="project-card__tags">
-            <li>HTML</li>
-            <li>CSS</li>
-            <li>JavaScript</li>
-          </ul>
-          <div class="project-card__links">
-            <a href="https://github.com/yourusername/project-three" target="_blank" rel="noopener">Code</a>
-            <a href="https://project-three-demo.com" target="_blank" rel="noopener">Live Demo</a>
-          </div>
-        </article>
-
-      </div>
-    </section>
-
-    <!-- skills section -->
-    <section id="skills" class="section skills">
-      <h2 class="section__title">Skills</h2>
-
-      <div class="skills__group">
-        <h3>Languages</h3>
-        <ul class="skills__list">
-          <li>Java</li>
-          <li>C++,C#</li>
-          <li>VS.Net</li>
+      <section id="contact" class="section contact">
+        <h2 class="section__title">Contact</h2>
+        <p>Want to get in touch? Reach me at:</p>
+        <ul class="contact__links">
+          <li v-for="item in contactLinks" :key="item.label">
+            <a
+              :href="item.url"
+              :target="item.external ? '_blank' : null"
+              :rel="item.external ? 'noopener' : null"
+            >
+              {{ item.label }}
+            </a>
+          </li>
         </ul>
-      </div>
+      </section>
+    </main>
 
-      <div class="skills__group">
-        <h3>Frameworks & Tools</h3>
-        <ul class="skills__list">
-          <li>React</li>
-          <li>Node.js</li>
-          <li>Git & GitHub</li>
-        </ul>
-      </div>
-    </section>
+    <footer class="site-footer">
+      <p>© {{ currentYear }} {{ profile.name }}. Built with GitHub Pages.</p>
+    </footer>
+  </div>
 
-    <!-- contact section -->
-    <section id="contact" class="section contact">
-      <h2 class="section__title">Contact</h2>
-      <p>Want to get in touch? Reach me at:</p>
-      <ul class="contact__links">
-        <li><a href="mailto:you@example.com">Email</a></li>
-        <li><a href="https://github.com/nee0nn" target="_blank" rel="noopener">GitHub</a></li>
-        <li><a href="https://linkedin.com/in/yourusername" target="_blank" rel="noopener">LinkedIn</a></li>
-      </ul>
-    </section>
-
-  </main>
-
-  <!-- footer -->
-  <footer class="site-footer">
-    <p>© 2026 Your Name. Built with GitHub Pages.</p>
-  </footer>
-
+  <!-- Load Vue globally first, then load your script -->
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
