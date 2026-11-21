@@ -1,16 +1,23 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>John Russell — Portfolio</title>
   <meta name="description" content="Portfolio of John Russell — tech enthusiast, etc." />
-  <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="style.css" />
+  
+  <script>
+    const savedTheme = localStorage.getItem('theme');
+    const isDark = savedTheme ? savedTheme === 'dark' : true;
+    document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+  </script>
+</head>
 </head>
 <body>
   <div id="app">
 
-    <!-- layered progressive blur (iOS-style) -->
+    
     <div class="progressive-blur" aria-hidden="true">
       <div class="progressive-blur__layer"></div>
       <div class="progressive-blur__layer"></div>

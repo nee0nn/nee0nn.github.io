@@ -8,10 +8,12 @@ createApp({
     const menuOpen = ref(false)
 
     // dark / light mode
-    const isDark = ref(false)
+    const isDark = ref(true) // Default to true
     const savedTheme = localStorage.getItem('theme')
-    const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
-    isDark.value = savedTheme ? savedTheme === 'dark' : systemPrefersDark
+    
+    // If savedTheme exists, use it. Otherwise, default to dark.
+    isDark.value = savedTheme ? savedTheme === 'dark' : true
+    
     document.documentElement.setAttribute('data-theme', isDark.value ? 'dark' : 'light')
 
     function toggleTheme() {
@@ -32,6 +34,7 @@ createApp({
       { label: 'About', href: '#about' },
       { label: 'Projects', href: '#projects' },
       { label: 'Skills', href: '#skills' },
+      { label: 'Hobbies', href: 'hobbies.html' },
       { label: 'Contact', href: '#contact' }
     ])
 

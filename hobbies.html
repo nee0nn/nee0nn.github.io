@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hobbies — John Russell</title>
+    <link rel="stylesheet" href="style.css" />
+  <script>
+    const savedTheme = localStorage.getItem('theme');
+    const isDark = savedTheme ? savedTheme === 'dark' : true;
+    document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+  </script>
+</head>
+</head>
+<body>
+  <div id="app">
+
+    <div class="progressive-blur" aria-hidden="true">
+      <div class="progressive-blur__layer"></div>
+      <div class="progressive-blur__layer"></div>
+      <div class="progressive-blur__layer"></div>
+      <div class="progressive-blur__layer"></div>
+      <div class="progressive-blur__layer"></div>
+      <div class="progressive-blur__layer"></div>
+    </div>
+
+    <header class="site-header">
+      <nav class="nav" aria-label="Main navigation">
+        <a href="index.html" class="nav__logo">{{ profile.name }}</a>
+
+        <div class="nav__right">
+          <ul class="nav__links" :class="{ 'is-open': menuOpen }" id="nav-menu">
+            <li v-for="link in navLinks" :key="link.label">
+              <a :href="link.href" @click="menuOpen = false">{{ link.label }}</a>
+            </li>
+          </ul>
+
+          <div class="nav__actions">
+            <button class="theme-toggle" @click="toggleTheme" :aria-label="isDark ? 'Switch to light mode' : 'Switch to dark mode'">
+              {{ isDark ? '☀️' : '🌙' }}
+            </button>
+
+            <!-- This is the mobile nav button -->
+            <button class="nav__toggle" @click="menuOpen = !menuOpen" :aria-expanded="menuOpen" aria-controls="nav-menu" aria-label="Toggle navigation menu">
+              <span class="nav__toggle-bar"></span>
+              <span class="nav__toggle-bar"></span>
+              <span class="nav__toggle-bar"></span>
+            </button>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero">
+        <h1 class="hero__title">My Hobbies</h1>
+        <p class="hero__subtitle">What I do when I'm not coding</p>
+        <p class="hero__text">Here are some of the things I enjoy doing in my free time.</p>
+      </section>
+
+      <section class="section">
+        <h2 class="section__title">Things I Love</h2>
+        
+        <div class="projects__grid">
+          
+          <!-- Hobby Card 1 -->
+          <article class="project-card">
+            <h3 class="project-card__title">Gaming</h3>
+            <p class="project-card__desc">
+              I enjoy playing strategy and simulation games. It helps me unwind and keeps my problem-solving skills sharp.
+            </p>
+          </article>
+
+          <!-- Hobby Card 2 -->
+          <article class="project-card">
+            <h3 class="project-card__title">Reading Sci-Fi</h3>
+            <p class="project-card__desc">
+              Big fan of authors like Isaac Asimov and Frank Herbert. I love exploring futuristic concepts and world-building.
+            </p>
+          </article>
+
+          <!-- Hobby Card 3 -->
+          <article class="project-card">
+            <h3 class="project-card__title">Building PCs</h3>
+            <p class="project-card__desc">
+              I love researching parts, putting hardware together, and tweaking software to get the best performance possible.
+            </p>
+          </article>
+
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>© {{ currentYear }} {{ profile.name }}. Built with GitHub Pages.</p>
+    </footer>
+  </div>
+
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <script src="hobbies.js"></script>
+</body>
+</html>
